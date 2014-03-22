@@ -10,8 +10,20 @@ then
   exit 1
 fi
 
+if [ -f "$FILE.decrypt" ]
+then
+  echo "$FILE.decrypt already exists; will not override"
+  exit 1
+fi
+
 #decrypt
 qpdf --password=$PASSWORD --decrypt $FILE "$FILE.decrypt"
+
+if [ ! -f "$FILE.decrypt" ]
+then
+  echo "Something went wrong decrypting; aborting"
+  exit 1
+fi
 
 #mv into bak
 mv "$FILE" "$FILE.bak"
